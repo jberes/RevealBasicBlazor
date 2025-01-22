@@ -4,6 +4,8 @@ using RevealBasic;
 using RevealBasic.AcmeAnalytics;
 using IgniteUI.Blazor.Controls;
 using Reveal.Sdk;
+using Reveal.Sdk.Data;
+using RevealSdk.Server.Reveal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,10 +33,15 @@ void RegisterIgniteUI(IServiceCollection services)
 builder.Services.AddControllers().AddReveal(builder =>
 {
     builder
-    .AddSettings(settings =>
-    {
-       // settings.License = "<paste your license key>";
-    });
+        //.AddSettings(settings =>
+        //{
+        //    settings.License = "eyJhbGciOicCI6IkpXVCJ9.e";
+        //})
+        .AddAuthenticationProvider<AuthenticationProvider>()
+        .AddDataSourceProvider<DataSourceProvider>()
+        .AddUserContextProvider<UserContextProvider>()
+        .AddObjectFilter<ObjectFilterProvider>()
+        .DataSources.RegisterMicrosoftSqlServer();
 });
 
 

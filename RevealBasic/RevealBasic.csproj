@@ -11,15 +11,12 @@
     <PackageReference Include="IgniteUI.Blazor.Trial" Version="24.2.26" />
     <PackageReference Include="Reveal.Sdk.AspNetCore" Version="1.7.2" />
     <PackageReference Include="Reveal.Sdk.Data.Microsoft.SqlServer" Version="1.7.2" />
+    <PackageReference Include="Reveal.Sdk.Dom" Version="0.1.346-beta" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Shared/MainLayout.razor.css" CssScope="master_view-scope" />
     <None Update="Pages/Viewer.razor.css" CssScope="viewer-scope" />
     <None Update="Pages/Creator.razor.css" CssScope="creator-scope" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Reveal\" />
   </ItemGroup>
 </Project>

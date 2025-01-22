@@ -2,13 +2,13 @@
 @page "/viewer"
 
 @using Models.AcmeAnalytics
+@using Reveal.Sdk.Dom
 @inject IJSRuntime JSRuntime
 
 <div class="row-layout viewer-container">
     <div class="column-layout group">
 
-        <!-- New "Click Me" button handler -->
-        <button @onclick="ClickButton">Click me</button>
+        <button @onclick="ClickButton">New Dashboard</button>
 
         <IgbList class="list" viewer-scope>
             @foreach (var item in _acmeAnalyticsDashboardNames)
@@ -36,17 +36,15 @@
     private string? _selectedDashboard;
     private List<DashboardNames> _acmeAnalyticsDashboardNames = new();
 
-    // Handle clicking a dashboard list item
     public async void ListItemClick(DashboardNames item)
     {
         _selectedDashboard = item.DashboardFileName;
         await JSRuntime.InvokeVoidAsync("loadRevealView", "revealView", _selectedDashboard);
     }
 
-    // Handle the "Click me" button
     private async Task ClickButton()
     {
-        await JSRuntime.InvokeVoidAsync("loadRevealView2", "revealView", "");
+        await JSRuntime.InvokeVoidAsync("loadRevealView", "revealView", "");
     }
 
     protected override void OnInitialized()
@@ -57,15 +55,23 @@
             var files = Directory.GetFiles(dashboardFolder, "*.rdash");
             foreach (var file in files)
             {
-                var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
-                var fullFileName = Path.GetFileName(file);
+                try
+                {
+                    var dashboardTitle = RdashDocument.Load(file).Title; // Load the title from the file
+                    var fullFileName = Path.GetFileName(file); // Get the full file name with extension
 
-                _acmeAnalyticsDashboardNames.Add(new DashboardNames
-                    {
-                        DashboardTitle = fileNameWithoutExt,
-                        DashboardFileName = fullFileName
-                    });
+                    _acmeAnalyticsDashboardNames.Add(new DashboardNames
+                        {
+                            DashboardTitle = dashboardTitle,
+                            DashboardFileName = fullFileName
+                        });
+                }
+                catch (Exception ex)
+                {                    
+                    Console.WriteLine($"Error processing file '{file}': {ex.Message}");
+                }
             }
         }
+
     }
 }
