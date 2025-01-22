@@ -1,4 +1,8 @@
-﻿window.loadRevealView = async function (viewId, dashboardName) {
+﻿//$.ig.RevealSdkSettings.enableBetaFeatures = true;
+//$.ig.RevealSdkSettings.enableNewToolbar = true;
+$.ig.RevealSdkSettings.enableActionsOnHoverTooltip = true;
+
+window.loadRevealView = async function (viewId, dashboardName) {
 
     // Dynamically pass headers to server
     $.ig.RevealSdkSettings.setAdditionalHeadersProvider(function (url) {
@@ -16,6 +20,7 @@
     }
 
     const revealView = new $.ig.RevealView("#" + viewId);
+    revealView.interactiveFilteringEnabled = true;
 
     if (!rvDashboard) {
         revealView.startInEditMode = true;
