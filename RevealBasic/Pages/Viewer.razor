@@ -1,11 +1,15 @@
 @page "/"
 @page "/viewer"
-@using AcmeAnalytics
+
 @using Models.AcmeAnalytics
-@inject IAcmeAnalyticsService AcmeAnalyticsService
+@inject IJSRuntime JSRuntime
 
 <div class="row-layout viewer-container">
     <div class="column-layout group">
+
+        <!-- New "Click Me" button handler -->
+        <button @onclick="ClickButton">Click me</button>
+
         <IgbList class="list" viewer-scope>
             @foreach (var item in _acmeAnalyticsDashboardNames)
             {
@@ -24,7 +28,7 @@
         </IgbList>
     </div>
     <div class="column-layout group_1">
-        <span class="reveal-dash-board">RevealDashBoard not yet available in Blazor</span>
+        <div id="revealView" style="height: calc(100vh - 100px); width: 100%; position:relative;"></div>
     </div>
 </div>
 
@@ -32,14 +36,36 @@
     private string? _selectedDashboard;
     private List<DashboardNames> _acmeAnalyticsDashboardNames = new();
 
-    public void ListItemClick(DashboardNames item)
+    // Handle clicking a dashboard list item
+    public async void ListItemClick(DashboardNames item)
     {
-        this._selectedDashboard = item.DashboardFileName;
+        _selectedDashboard = item.DashboardFileName;
+        await JSRuntime.InvokeVoidAsync("loadRevealView", "revealView", _selectedDashboard);
     }
 
-    protected override async Task OnInitializedAsync()
+    // Handle the "Click me" button
+    private async Task ClickButton()
     {
-        _acmeAnalyticsDashboardNames = await AcmeAnalyticsService.GetDashboardNamesList();
-        await base.OnInitializedAsync();
+        await JSRuntime.InvokeVoidAsync("loadRevealView2", "revealView", "");
+    }
+
+    protected override void OnInitialized()
+    {
+        var dashboardFolder = Path.Combine(Environment.CurrentDirectory, "Dashboards");
+        if (Directory.Exists(dashboardFolder))
+        {
+            var files = Directory.GetFiles(dashboardFolder, "*.rdash");
+            foreach (var file in files)
+            {
+                var fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
+                var fullFileName = Path.GetFileName(file);
+
+                _acmeAnalyticsDashboardNames.Add(new DashboardNames
+                    {
+                        DashboardTitle = fileNameWithoutExt,
+                        DashboardFileName = fullFileName
+                    });
+            }
+        }
     }
 }

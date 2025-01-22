@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using RevealBasic;
 using RevealBasic.AcmeAnalytics;
 using IgniteUI.Blazor.Controls;
+using Reveal.Sdk;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,16 @@ void RegisterIgniteUI(IServiceCollection services)
     );
 }
 
+builder.Services.AddControllers().AddReveal(builder =>
+{
+    builder
+    .AddSettings(settings =>
+    {
+       // settings.License = "<paste your license key>";
+    });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,12 +49,20 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+// Required for Reveal
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.Run();

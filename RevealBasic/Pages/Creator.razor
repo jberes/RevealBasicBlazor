@@ -1,8 +1,20 @@
 @page "/creator"
+@inject IJSRuntime JSRuntime
 
 <div class="row-layout creator-container">
-    <span class="reveal-dash-board">RevealDashBoard not yet available in Blazor</span>
+    <div id="revealView" style="height: calc(100vh - 100px); width: 100%; position:relative;"></div>
 </div>
 
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("loadRevealView2", "revealView", "");
+        //return base.OnAfterRenderAsync(firstRender);
+    }
+
 }

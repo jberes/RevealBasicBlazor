@@ -4,15 +4,22 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>RevealBasic</RootNamespace>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="IgniteUI.Blazor.Trial" Version="24.2.26" />
+    <PackageReference Include="Reveal.Sdk.AspNetCore" Version="1.7.2" />
+    <PackageReference Include="Reveal.Sdk.Data.Microsoft.SqlServer" Version="1.7.2" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Shared/MainLayout.razor.css" CssScope="master_view-scope" />
     <None Update="Pages/Viewer.razor.css" CssScope="viewer-scope" />
     <None Update="Pages/Creator.razor.css" CssScope="creator-scope" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Reveal\" />
   </ItemGroup>
 </Project>
