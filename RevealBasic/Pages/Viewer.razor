@@ -1,0 +1,45 @@
+@page "/"
+@page "/viewer"
+@using AcmeAnalytics
+@using Models.AcmeAnalytics
+@inject IAcmeAnalyticsService AcmeAnalyticsService
+
+<div class="row-layout viewer-container">
+    <div class="column-layout group">
+        <IgbList class="list" viewer-scope>
+            @foreach (var item in _acmeAnalyticsDashboardNames)
+            {
+                <IgbListItem @onclick="() => ListItemClick(item)">
+                    <IgbAvatar slot="start" Shape="AvatarShape.Circle" class="avatar" viewer-scope>
+                        <span class="material-icons">
+                            person
+                        </span>
+                    </IgbAvatar>
+                    <div slot="title">@item.DashboardTitle</div>
+                    <span slot="end" class="material-icons icon">
+                        star
+                    </span>
+                </IgbListItem>
+            }
+        </IgbList>
+    </div>
+    <div class="column-layout group_1">
+        <span class="reveal-dash-board">RevealDashBoard not yet available in Blazor</span>
+    </div>
+</div>
+
+@code {
+    private string? _selectedDashboard;
+    private List<DashboardNames> _acmeAnalyticsDashboardNames = new();
+
+    public void ListItemClick(DashboardNames item)
+    {
+        this._selectedDashboard = item.DashboardFileName;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _acmeAnalyticsDashboardNames = await AcmeAnalyticsService.GetDashboardNamesList();
+        await base.OnInitializedAsync();
+    }
+}

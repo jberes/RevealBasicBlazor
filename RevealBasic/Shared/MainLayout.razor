@@ -1,0 +1,58 @@
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+
+<div class="column-layout master-view-container">
+    <IgbNavbar class="navbar" master_view-scope>
+        <IgbIconButton slot="start" Variant="IconButtonVariant.Flat" @onclick="@(e => _navDrawer!.ToggleAsync())" class="icon-button" master_view-scope>
+            <span class="material-icons icon">
+                menu
+            </span>
+            <IgbRipple></IgbRipple>
+        </IgbIconButton>
+        <div class="row-layout group">
+            <h6 class="h6">
+                Reveal Demo App
+            </h6>
+        </div>
+        <IgbIconButton slot="end" Variant="IconButtonVariant.Flat" class="icon-button" master_view-scope>
+            <span class="material-icons icon">
+                more_vert
+            </span>
+            <IgbRipple></IgbRipple>
+        </IgbIconButton>
+    </IgbNavbar>
+    <div class="row-layout group_1">
+        <IgbNavDrawer @ref="_navDrawer" class="nav-drawer" master_view-scope>
+            <IgbNavDrawerItem @onclick="@(e => Navigate("/viewer"))">
+                <span slot="icon">
+                    <span class="material-icons icon_1">
+                        book
+                    </span>
+                    <IgbRipple></IgbRipple>
+                </span>
+                <div slot="content">Viewer</div>
+            </IgbNavDrawerItem>
+            <IgbNavDrawerItem @onclick="@(e => Navigate("/creator"))">
+                <span slot="icon">
+                    <span class="material-icons icon_1">
+                        assessment
+                    </span>
+                    <IgbRipple></IgbRipple>
+                </span>
+                <div slot="content">Creator</div>
+            </IgbNavDrawerItem>
+        </IgbNavDrawer>
+        <div class="view-container">
+            @Body
+        </div>
+    </div>
+</div>
+
+@code {
+    private IgbNavDrawer _navDrawer;
+
+    public void Navigate(string path)
+    {
+        NavigationManager.NavigateTo(path);
+    }
+}

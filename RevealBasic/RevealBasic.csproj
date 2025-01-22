@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>RevealBasic</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IgniteUI.Blazor.Trial" Version="24.2.26" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Shared/MainLayout.razor.css" CssScope="master_view-scope" />
+    <None Update="Pages/Viewer.razor.css" CssScope="viewer-scope" />
+    <None Update="Pages/Creator.razor.css" CssScope="creator-scope" />
+  </ItemGroup>
+</Project>
